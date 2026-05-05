@@ -18,12 +18,42 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 20px;
+            padding-top: 70px; /* 给导航栏留位置 */
         }
+
+        /* 导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #0f172a;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 999;
+            text-align: center;
+        }
+        .nav-item {
+            display: inline-block;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 0 20px;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .nav-item:hover, .nav-active {
+            background: #e94560;
+            color: #fff;
+        }
+
         .container {
-            max-width: 600px;
+            max-width: 700px;
             width: 100%;
             text-align: center;
+            padding: 20px;
         }
         .avatar {
             width: 200px;
@@ -88,6 +118,7 @@
             background: rgba(0,0,0,0.8);
             justify-content: center;
             align-items: center;
+            z-index: 9999;
         }
         .modal-content {
             background: #222;
@@ -121,17 +152,89 @@
             margin-top: 40px;
             color: #666;
             font-size: 0.9rem;
+            padding-bottom: 20px;
         }
         #userInfo {
             color: #25f4ee;
             margin: 15px 0;
             font-size: 1.1rem;
         }
+
+        /* 专区样式 */
+        .section-box {
+            max-width: 600px;
+            width: 100%;
+            margin: 30px auto;
+            padding: 25px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            border: 1px solid #333;
+        }
+        .section-title {
+            text-align: center;
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            border-left: 5px solid #e94560;
+            padding-left: 10px;
+            text-align: left;
+        }
+        .link-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .game-link {
+            display: block;
+            text-align: center;
+            padding: 16px;
+            background: #6366f1;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .game-link:hover {
+            background: #818cf8;
+            transform: scale(1.02);
+        }
+        .soft-link {
+            display: block;
+            text-align: center;
+            padding: 16px;
+            background: #0ea5e9;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .soft-link:hover {
+            background: #38bdf8;
+            transform: scale(1.02);
+        }
+        .pc-soft-link {
+            background: #f97316;
+        }
+        .pc-soft-link:hover {
+            background: #fb923c;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
+<!-- 顶部导航栏 -->
+<div class="navbar">
+    <a href="#home" class="nav-item nav-active">首页</a>
+    <a href="#software" class="nav-item">软件</a>
+    <a href="#games" class="nav-item">游戏</a>
+</div>
+
+<!-- 首页 -->
+<div id="home" class="container">
     <img src="hlx.png" alt="黄雷荀的照片" class="avatar">
     <h1>最厉害的黄雷荀</h1>
 
@@ -152,6 +255,35 @@
     <button class="btn auth-btn" onclick="openModal('loginModal')">登录 / 注册</button>
 </div>
 
+<!-- 软件专区 -->
+<div id="software" class="section-box">
+    <h2 class="section-title">📱 安卓正版软件</h2>
+    <div class="link-list">
+        <a href="https://www.pubgmobile.com/en-US/home.shtml" class="soft-link">1. PUBG 国际服 官网</a>
+        <a href="https://www.minecraft.net/en-us/download" class="soft-link">2. 我的世界国际服 官方下载</a>
+    </div>
+
+    <h2 class="section-title" style="margin-top:30px;">💻 电脑正版软件</h2>
+    <div class="link-list">
+        <a href="https://pcl2.aoe.top/" class="soft-link pc-soft-link">1. PCL2 启动器 作者官网</a>
+        <a href="https://jdk.java.net/21/" class="soft-link pc-soft-link">2. Java 21 官方原版</a>
+        <a href="https://store.steampowered.com/about/" class="soft-link pc-soft-link">3. Steam 官方下载</a>
+    </div>
+</div>
+
+<!-- 游戏专区 -->
+<div id="games" class="section-box">
+    <h2 class="section-title">🎮 热门网页小游戏</h2>
+    <div class="link-list">
+        <a href="https://flappybird.io" target="_blank" class="game-link">🐦 飞翔的小鸟 Flappy Bird</a>
+        <a href="https://classic.minecraft.net" target="_blank" class="game-link">🌍 我的世界 网页版</a>
+        <a href="https://playsnake.org" target="_blank" class="game-link">🐍 经典贪吃蛇</a>
+        <a href="https://play2048.co" target="_blank" class="game-link">🔢 2048 数字拼图</a>
+        <a href="https://www.tetris.com" target="_blank" class="game-link">🧱 俄罗斯方块</a>
+        <a href="https://www.crazygames.com" target="_blank" class="game-link">🎮 更多小游戏合集</a>
+    </div>
+</div>
+
 <!-- 登录弹窗 -->
 <div id="loginModal" class="modal">
     <div class="modal-content">
@@ -160,7 +292,7 @@
         <input type="text" id="loginUser" placeholder="输入用户名">
         <input type="password" id="loginPwd" placeholder="输入密码">
         <button class="btn auth-btn" onclick="userLogin()">登录</button>
-        <p style="margin-top:10px;">没有账号？<span style="color:#25f4ee;cursor:pointer" onclick="switchModal('regModal')">立即注册</span></p>
+        <p style="margin-top:10px; color:#fff;">没有账号？<span style="color:#25f4ee;cursor:pointer" onclick="switchModal('regModal')">立即注册</span></p>
     </div>
 </div>
 
@@ -173,7 +305,7 @@
         <input type="password" id="regPwd" placeholder="设置密码">
         <input type="password" id="regPwd2" placeholder="确认密码">
         <button class="btn auth-btn" onclick="userRegister()">注册</button>
-        <p style="margin-top:10px;">已有账号？<span style="color:#25f4ee;cursor:pointer" onclick="switchModal('loginModal')">立即登录</span></p>
+        <p style="margin-top:10px; color:#fff;">已有账号？<span style="color:#25f4ee;cursor:pointer" onclick="switchModal('loginModal')">立即登录</span></p>
     </div>
 </div>
 
@@ -211,7 +343,6 @@ function userRegister() {
         alert('两次密码不一致！');
         return;
     }
-    // 保存到浏览器本地
     localStorage.setItem('username', user);
     localStorage.setItem('password', pwd);
     alert('注册成功！请登录');
@@ -235,7 +366,7 @@ function userLogin() {
     }
 }
 
-// 页面加载检查登录状态
+// 页面加载检查登录
 window.onload = function() {
     let user = localStorage.getItem('username');
     if(user) {
@@ -243,43 +374,5 @@ window.onload = function() {
     }
 }
 </script>
-<!-- 官方正版下载专区 字体白色版 -->
-<div style="max-width: 500px; margin: 30px auto; padding: 20px;">
-  <h2 style="text-align:center; color:#fff;">📱 安卓专区（官方正版）</h2>
-  <div style="display:flex; flex-direction:column; gap:12px; margin:20px 0;">
-    <a href="https://www.pubgmobile.com/en-US/home.shtml" 
-    style="display:block; text-align:center; padding:14px; background:#0099ff; color:#fff; text-decoration:none; border-radius:8px; font-size:16px;">
-    1. PUBG 国际服 官网
-    </a>
-
-    <a href="https://www.minecraft.net/en-us/download" 
-    style="display:block; text-align:center; padding:14px; background:#0099ff; color:#fff; text-decoration:none; border-radius:8px; font-size:16px;">
-    2. 我的世界国际服 官方下载
-    </a>
-  </div>
-
-
-  <h2 style="text-align:center; color:#fff; margin-top:40px;">💻 电脑专区（官方正版）</h2>
-  <div style="display:flex; flex-direction:column; gap:12px; margin:20px 0;">
-    <a href="https://pcl2.aoe.top/" 
-    style="display:block; text-align:center; padding:14px; background:#ff7700; color:#fff; text-decoration:none; border-radius:8px; font-size:16px;">
-    1. PCL2 启动器 作者官网
-    </a>
-
-    <a href="https://jdk.java.net/21/" 
-    style="display:block; text-align:center; padding:14px; background:#ff7700; color:#fff; text-decoration:none; border-radius:8px; font-size:16px;">
-    2. Java 21 官方原版
-    </a>
-
-    <a href="https://store.steampowered.com/about/" 
-    style="display:block; text-align:center; padding:14px; background:#ff7700; color:#fff; text-decoration:none; border-radius:8px; font-size:16px;">
-    3. Steam 官方下载
-    </a>
-  </div>
-
-  <p style="text-align:center; color:#fff; margin-top:25px; font-size:14px;">
-  ✅ 全部为官方正版链接，安全无捆绑
-  </p>
-</div>
 </body>
 </html>
