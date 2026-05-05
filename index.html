@@ -43,54 +43,206 @@
         .intro {
             font-size: 1.2rem;
             line-height: 1.8;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             color: #ccc;
         }
-        .douyin-btn {
+        /* 按钮样式 */
+        .btn {
             display: inline-block;
-            background: #000;
-            color: #fff;
-            padding: 15px 40px;
+            padding: 12px 30px;
             border-radius: 50px;
             text-decoration: none;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
-            transition: all 0.3s ease;
+            margin: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+        }
+        .douyin-btn {
+            background: #000;
+            color: #fff;
             border: 2px solid #25f4ee;
         }
         .douyin-btn:hover {
             background: #25f4ee;
             color: #000;
-            box-shadow: 0 0 20px rgba(37, 244, 238, 0.7);
+            box-shadow: 0 0 15px #25f4ee;
+        }
+        .auth-btn {
+            background: #e94560;
+            color: #fff;
+        }
+        .auth-btn:hover {
+            background: #ff5a75;
             transform: scale(1.05);
         }
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #222;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            border: 2px solid #e94560;
+        }
+        .modal-content h2 {
+            color: #e94560;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+        }
+        .close {
+            float: right;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
         footer {
-            margin-top: 60px;
+            margin-top: 40px;
             color: #666;
             font-size: 0.9rem;
+        }
+        #userInfo {
+            color: #25f4ee;
+            margin: 15px 0;
+            font-size: 1.1rem;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- 这里改你的照片！把src里的链接换成你自己的图片地址 -->
-        <img src="https://picsum.photos/200/200" alt="黄雷荀的照片" class="avatar">
 
-        <h1>最厉害的黄雷荀</h1>
+<div class="container">
+    <img src="hlx.png" alt="黄雷荀的照片" class="avatar">
+    <h1>最厉害的黄雷荀</h1>
 
-        <div class="intro">
-            👋 哈喽！我是黄雷荀<br>
-            🚴‍♂️ 骑行爱好者 | 💻 电脑技术党 | 🎮 全能玩家<br>
-            📚 实验中学308班的技术大佬<br>
-            ✨ 爱折腾、爱探索、永远不服输
-        </div>
-
-        <!-- 这里改你的抖音链接！把href里的#换成你的抖音分享链接 -->
-        <a href="https://www.douyin.com/user/MS4wLjABAAAAiA8yOUz29wGFf8eMho0WXEgQHfPIwQl8rThYYjCnCQU?from_tab_name=main" class="douyin-btn">👉 点击跳转到我的抖音</a>
+    <div class="intro">
+        👋 哈喽！我是黄雷荀<br>
+        🚴‍♂️ 骑行爱好者 | 💻 电脑技术党 | 🎮 全能玩家<br>
+        📚 实验中学308班的技术大佬<br>
+        ✨ 爱折腾、爱探索、永远不服输
     </div>
 
-    <footer>
-        Made with ❤️ by 黄雷荀 | 2026
-    </footer>
+    <!-- 用户登录状态 -->
+    <div id="userInfo"></div>
+
+    <!-- 抖音跳转按钮 -->
+    <a href="https://www.douyin.com/user/MS4wLjABAAAAiA8yOUz29wGFf8eMho0WXEgQHfPIwQl8rThYYjCnCQU?from_tab_name=main" class="btn douyin-btn">👉 点击跳转到我的抖音</a>
+    
+    <!-- 登录/注册按钮 -->
+    <button class="btn auth-btn" onclick="openModal('loginModal')">登录 / 注册</button>
+</div>
+
+<!-- 登录弹窗 -->
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('loginModal')">×</span>
+        <h2>用户登录</h2>
+        <input type="text" id="loginUser" placeholder="输入用户名">
+        <input type="password" id="loginPwd" placeholder="输入密码">
+        <button class="btn auth-btn" onclick="userLogin()">登录</button>
+        <p style="margin-top:10px;">没有账号？<span style="color:#25f4ee;cursor:pointer" onclick="switchModal('regModal')">立即注册</span></p>
+    </div>
+</div>
+
+<!-- 注册弹窗 -->
+<div id="regModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('regModal')">×</span>
+        <h2>用户注册</h2>
+        <input type="text" id="regUser" placeholder="设置用户名">
+        <input type="password" id="regPwd" placeholder="设置密码">
+        <input type="password" id="regPwd2" placeholder="确认密码">
+        <button class="btn auth-btn" onclick="userRegister()">注册</button>
+        <p style="margin-top:10px;">已有账号？<span style="color:#25f4ee;cursor:pointer" onclick="switchModal('loginModal')">立即登录</span></p>
+    </div>
+</div>
+
+<footer>
+    Made with ❤️ by 黄雷荀 | 2026 | 专属个人网站
+</footer>
+
+<script>
+// 打开弹窗
+function openModal(id) {
+    document.getElementById(id).style.display = "flex";
+}
+// 关闭弹窗
+function closeModal(id) {
+    document.getElementById(id).style.display = "none";
+}
+// 切换弹窗
+function switchModal(id) {
+    closeModal('loginModal');
+    closeModal('regModal');
+    openModal(id);
+}
+
+// 注册功能
+function userRegister() {
+    let user = document.getElementById('regUser').value;
+    let pwd = document.getElementById('regPwd').value;
+    let pwd2 = document.getElementById('regPwd2').value;
+
+    if(!user || !pwd || !pwd2) {
+        alert('请填写完整信息！');
+        return;
+    }
+    if(pwd !== pwd2) {
+        alert('两次密码不一致！');
+        return;
+    }
+    // 保存到浏览器本地
+    localStorage.setItem('username', user);
+    localStorage.setItem('password', pwd);
+    alert('注册成功！请登录');
+    switchModal('loginModal');
+}
+
+// 登录功能
+function userLogin() {
+    let user = document.getElementById('loginUser').value;
+    let pwd = document.getElementById('loginPwd').value;
+    
+    let localUser = localStorage.getItem('username');
+    let localPwd = localStorage.getItem('password');
+
+    if(user === localUser && pwd === localPwd) {
+        alert('登录成功！欢迎你，' + user);
+        document.getElementById('userInfo').innerText = '当前登录：' + user;
+        closeModal('loginModal');
+    } else {
+        alert('账号或密码错误！');
+    }
+}
+
+// 页面加载检查登录状态
+window.onload = function() {
+    let user = localStorage.getItem('username');
+    if(user) {
+        document.getElementById('userInfo').innerText = '当前登录：' + user;
+    }
+}
+</script>
+
 </body>
 </html>
