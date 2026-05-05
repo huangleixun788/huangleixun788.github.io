@@ -74,7 +74,7 @@
 <body>
     <div class="container">
         <!-- 这里改你的照片！把src里的链接换成你自己的图片地址 -->
-        <img src="https://picsum.photos/200/200" alt="黄雷荀的照片" class="avatar">
+        <img src="hlx.png" alt="黄雷荀的照片" class="avatar">
 
         <h1>最厉害的黄雷荀</h1>
 
