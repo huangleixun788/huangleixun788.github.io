@@ -18,7 +18,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 70px; /* 给导航栏留位置 */
+            padding-top: 70px;
         }
 
         /* 导航栏 */
@@ -39,7 +39,7 @@
             text-decoration: none;
             font-size: 1.1rem;
             font-weight: bold;
-            margin: 0 20px;
+            margin: 0 15px;
             padding: 8px 15px;
             border-radius: 8px;
             transition: 0.3s;
@@ -166,6 +166,7 @@
             width: 100%;
             margin: 30px auto;
             padding: 25px;
+            background: rgba255,255,255,0.05;
             background: rgba(255,255,255,0.05);
             border-radius: 15px;
             border: 1px solid #333;
@@ -175,9 +176,6 @@
             color: #fff;
             font-size: 1.5rem;
             margin-bottom: 20px;
-            border-left: 5px solid #e94560;
-            padding-left: 10px;
-            text-align: left;
         }
         .link-list {
             display: flex;
@@ -222,6 +220,39 @@
         .pc-soft-link:hover {
             background: #fb923c;
         }
+
+        /* 访客统计 */
+        .visit-box{
+            background:rgba(233,69,96,0.2);
+            padding:15px;
+            border-radius:10px;
+            margin:20px auto;
+            max-width:400px;
+            font-size:1.1rem;
+            color:#ffabb8;
+        }
+
+        /* 留言板样式 */
+        .msg-input{
+            width:100%;
+            padding:12px;
+            border-radius:8px;
+            border:none;
+            outline:none;
+            margin-bottom:15px;
+            font-size:1rem;
+        }
+        .msg-item{
+            background:rgba(255,255,255,0.1);
+            padding:12px;
+            border-radius:8px;
+            margin:10px 0;
+            text-align:left;
+        }
+        .msg-name{
+            color:#25f4ee;
+            font-weight:bold;
+        }
     </style>
 </head>
 <body>
@@ -231,6 +262,7 @@
     <a href="#home" class="nav-item nav-active">首页</a>
     <a href="#software" class="nav-item">软件</a>
     <a href="#games" class="nav-item">游戏</a>
+    <a href="#message" class="nav-item">留言板</a>
 </div>
 
 <!-- 首页 -->
@@ -243,6 +275,11 @@
         🚴‍♂️ 骑行爱好者 | 💻 电脑技术党 | 🎮 全能玩家<br>
         📚 实验中学308班的技术大佬<br>
         ✨ 爱折腾、爱探索、永远不服输
+    </div>
+
+    <!-- 访客统计 -->
+    <div class="visit-box">
+        🌐 本站总访问次数：<span id="visitCount">0</span> 次
     </div>
 
     <!-- 用户登录状态 -->
@@ -259,15 +296,15 @@
 <div id="software" class="section-box">
     <h2 class="section-title">📱 安卓正版软件</h2>
     <div class="link-list">
-        <a href="https://www.pubgmobile.com/en-US/home.shtml" class="soft-link">1. PUBG 国际服 官网</a>
-        <a href="https://www.minecraft.net/en-us/download" class="soft-link">2. 我的世界国际服 官方下载</a>
+        <a href="https://www.pubgmobile.com/en-US/home.shtml" target="_blank" class="soft-link">1. PUBG 国际服 官网</a>
+        <a href="https://www.minecraft.net/en-us/download" target="_blank" class="soft-link">2. 我的世界国际服 官方下载</a>
     </div>
 
     <h2 class="section-title" style="margin-top:30px;">💻 电脑正版软件</h2>
     <div class="link-list">
-        <a href="https://pcl2.aoe.top/" class="soft-link pc-soft-link">1. PCL2 启动器 作者官网</a>
-        <a href="https://jdk.java.net/21/" class="soft-link pc-soft-link">2. Java 21 官方原版</a>
-        <a href="https://store.steampowered.com/about/" class="soft-link pc-soft-link">3. Steam 官方下载</a>
+        <a href="https://pcl2.aoe.top/" target="_blank" class="soft-link pc-soft-link">1. PCL2 启动器 作者官网</a>
+        <a href="https://jdk.java.net/21/" target="_blank" class="soft-link pc-soft-link">2. Java 21 官方原版</a>
+        <a href="https://store.steampowered.com/about/" target="_blank" class="soft-link pc-soft-link">3. Steam 官方下载</a>
     </div>
 </div>
 
@@ -282,6 +319,15 @@
         <a href="https://www.tetris.com" target="_blank" class="game-link">🧱 俄罗斯方块</a>
         <a href="https://www.crazygames.com" target="_blank" class="game-link">🎮 更多小游戏合集</a>
     </div>
+</div>
+
+<!-- 留言板专区 -->
+<div id="message" class="section-box">
+    <h2 class="section-title">💬 访客留言板</h2>
+    <input type="text" id="msgName" class="msg-input" placeholder="你的昵称">
+    <input type="text" id="msgContent" class="msg-input" placeholder="输入留言内容...">
+    <button class="btn auth-btn" onclick="sendMessage()">提交留言</button>
+    <div id="msgList"></div>
 </div>
 
 <!-- 登录弹窗 -->
@@ -314,22 +360,29 @@
 </footer>
 
 <script>
-// 打开弹窗
+// ========== 访客统计 ==========
+function countVisit(){
+    let count = localStorage.getItem('visitNum') || 0;
+    count = Number(count) + 1;
+    localStorage.setItem('visitNum',count);
+    document.getElementById('visitCount').innerText = count;
+}
+countVisit();
+
+// ========== 弹窗 ==========
 function openModal(id) {
     document.getElementById(id).style.display = "flex";
 }
-// 关闭弹窗
 function closeModal(id) {
     document.getElementById(id).style.display = "none";
 }
-// 切换弹窗
 function switchModal(id) {
     closeModal('loginModal');
     closeModal('regModal');
     openModal(id);
 }
 
-// 注册功能
+// ========== 注册登录 ==========
 function userRegister() {
     let user = document.getElementById('regUser').value;
     let pwd = document.getElementById('regPwd').value;
@@ -349,7 +402,6 @@ function userRegister() {
     switchModal('loginModal');
 }
 
-// 登录功能
 function userLogin() {
     let user = document.getElementById('loginUser').value;
     let pwd = document.getElementById('loginPwd').value;
@@ -366,12 +418,54 @@ function userLogin() {
     }
 }
 
-// 页面加载检查登录
 window.onload = function() {
     let user = localStorage.getItem('username');
     if(user) {
         document.getElementById('userInfo').innerText = '当前登录：' + user;
     }
+    // 加载留言
+    renderMessage();
+}
+
+// ========== 留言板功能 ==========
+// 提交留言
+function sendMessage(){
+    let name = document.getElementById('msgName').value.trim();
+    let content = document.getElementById('msgContent').value.trim();
+    if(!name || !content){
+        alert('请输入昵称和留言内容！');
+        return;
+    }
+    // 获取旧留言
+    let msgArr = JSON.parse(localStorage.getItem('msgList')) || [];
+    // 添加新留言
+    msgArr.push({
+        name:name,
+        content:content,
+        time:new Date().toLocaleString()
+    });
+    // 保存
+    localStorage.setItem('msgList',JSON.stringify(msgArr));
+    // 刷新列表
+    renderMessage();
+    // 清空输入框
+    document.getElementById('msgName').value = '';
+    document.getElementById('msgContent').value = '';
+}
+
+// 渲染留言列表
+function renderMessage(){
+    let msgArr = JSON.parse(localStorage.getItem('msgList')) || [];
+    let html = '';
+    for(let i=0;i<msgArr.length;i++){
+        html += `
+        <div class="msg-item">
+            <div class="msg-name">${msgArr[i].name} · ${msgArr[i].time}</div>
+            <div>${msgArr[i].content}</div>
+        </div>
+        `;
+    }
+    document.getElementById('msgList').innerHTML = html;
 }
 </script>
 </body>
