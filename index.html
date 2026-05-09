@@ -10,6 +10,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: '微软雅黑', sans-serif;
+            scroll-behavior: smooth;
         }
         body {
             background: linear-gradient(135deg, #1a1a2e, #16213e);
@@ -43,6 +44,7 @@
             padding: 8px 15px;
             border-radius: 8px;
             transition: 0.3s;
+            cursor: pointer;
         }
         .nav-item:hover, .nav-active {
             background: #e94560;
@@ -153,6 +155,8 @@
             color: #666;
             font-size: 0.9rem;
             padding-bottom: 20px;
+            text-align: center;
+            width: 100%;
         }
         #userInfo {
             color: #25f4ee;
@@ -163,10 +167,9 @@
         /* 专区样式 */
         .section-box {
             max-width: 600px;
-            width: 100%;
+            width: 90%;
             margin: 30px auto;
             padding: 25px;
-            background: rgba255,255,255,0.05;
             background: rgba(255,255,255,0.05);
             border-radius: 15px;
             border: 1px solid #333;
@@ -252,6 +255,7 @@
         .msg-name{
             color:#25f4ee;
             font-weight:bold;
+            margin-bottom:5px;
         }
     </style>
 </head>
@@ -259,10 +263,10 @@
 
 <!-- 顶部导航栏 -->
 <div class="navbar">
-    <a href="#home" class="nav-item nav-active">首页</a>
-    <a href="#software" class="nav-item">软件</a>
-    <a href="#games" class="nav-item">游戏</a>
-    <a href="#message" class="nav-item">留言板</a>
+    <a onclick="navSwitch('home')" class="nav-item nav-active">首页</a>
+    <a onclick="navSwitch('software')" class="nav-item">软件</a>
+    <a onclick="navSwitch('games')" class="nav-item">游戏</a>
+    <a onclick="navSwitch('message')" class="nav-item">留言板</a>
 </div>
 
 <!-- 首页 -->
@@ -367,7 +371,15 @@ function countVisit(){
     localStorage.setItem('visitNum',count);
     document.getElementById('visitCount').innerText = count;
 }
-countVisit();
+
+// ========== 导航切换 ==========
+function navSwitch(id) {
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('nav-active');
+    });
+    event.target.classList.add('nav-active');
+    document.getElementById(id).scrollIntoView();
+}
 
 // ========== 弹窗 ==========
 function openModal(id) {
@@ -418,17 +430,7 @@ function userLogin() {
     }
 }
 
-window.onload = function() {
-    let user = localStorage.getItem('username');
-    if(user) {
-        document.getElementById('userInfo').innerText = '当前登录：' + user;
-    }
-    // 加载留言
-    renderMessage();
-}
-
 // ========== 留言板功能 ==========
-// 提交留言
 function sendMessage(){
     let name = document.getElementById('msgName').value.trim();
     let content = document.getElementById('msgContent').value.trim();
@@ -436,24 +438,18 @@ function sendMessage(){
         alert('请输入昵称和留言内容！');
         return;
     }
-    // 获取旧留言
     let msgArr = JSON.parse(localStorage.getItem('msgList')) || [];
-    // 添加新留言
     msgArr.push({
         name:name,
         content:content,
         time:new Date().toLocaleString()
     });
-    // 保存
     localStorage.setItem('msgList',JSON.stringify(msgArr));
-    // 刷新列表
     renderMessage();
-    // 清空输入框
     document.getElementById('msgName').value = '';
     document.getElementById('msgContent').value = '';
 }
 
-// 渲染留言列表
 function renderMessage(){
     let msgArr = JSON.parse(localStorage.getItem('msgList')) || [];
     let html = '';
@@ -466,6 +462,16 @@ function renderMessage(){
         `;
     }
     document.getElementById('msgList').innerHTML = html;
+}
+
+// 页面加载完成
+window.onload = function() {
+    countVisit();
+    let user = localStorage.getItem('username');
+    if(user) {
+        document.getElementById('userInfo').innerText = '当前登录：' + user;
+    }
+    renderMessage();
 }
 </script>
 </body>
