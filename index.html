@@ -436,7 +436,7 @@
 <!-- 首页 -->
 <div id="home" class="container">
     <img src="hlx.png" onclick="avatarEffect()" class="avatar" alt="黄雷荀">
-    <h1 id="nameTitle">最厉害的黄雷荀</h1>
+    <h1>最厉害的黄雷荀</h1>
     <div id="introText" class="intro">
         👋 哈喽！我是黄雷荀<br>
         🚴‍♂️ 骑行爱好者 | 💻 电脑技术党 | 🎮 全能玩家<br>
@@ -454,7 +454,7 @@
     <div id="userInfo"></div>
     <button class="btn logout-btn" onclick="logout()" style="display:none;" id="logoutBtn">退出登录</button>
 
-    <a href="https://www.douyin.com/user/MS4wLjABAAAAiA8yOUz29wGFf8eMho0WXEgQHfPIwQl8rThYYjCnCQU" class="btn douyin-btn">👉 我的抖音</a>
+    <a href="https://www.douyin.com/user/MS4wLjABAAAAiA8yOUz29wGF8eMho0WXEgQHfPIwQl8rThYYjCnCQU" class="btn douyin-btn">👉 我的抖音</a>
     <button class="btn auth-btn" onclick="openModal('loginModal')">登录 / 注册</button>
     <button class="btn theme-btn" onclick="toggleTheme()">🌙 切换主题</button>
 </div>
@@ -621,18 +621,6 @@ document.addEventListener('click',e=>{
     document.body.appendChild(t);
     setTimeout(()=>t.remove(),1000);
 });
-
-// 打字机
-function typeWriter(el,text,i=0){
-    if(i<text.length){
-        document.getElementById(el).innerHTML+=text.charAt(i);
-        i++;
-        setTimeout(()=>typeWriter(el,text,i),50);
-    }
-}
-setTimeout(()=>{
-    typeWriter('nameTitle','最厉害的黄雷荀');
-},1000);
 
 // 时间
 function showTime(){
