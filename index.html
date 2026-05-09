@@ -405,28 +405,6 @@
             z-index:999;
         }
 
-        /* 欢迎动画 */
-        #welcome{
-            position:fixed;
-            top:0;left:0;
-            width:100%;height:100%;
-            background:#0f172a;
-            z-index:99999;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            flex-direction:column;
-            color:#e94560;
-            font-size:2rem;
-            font-weight:bold;
-            animation:welcomeAnim 2.5s forwards;
-        }
-        @keyframes welcomeAnim{
-            0%{opacity:1;}
-            80%{opacity:1;}
-            100%{opacity:0;visibility:hidden;}
-        }
-
         /* 点击文字 */
         .click-text{
             position:absolute;
@@ -443,10 +421,6 @@
     </style>
 </head>
 <body>
-
-<div id="welcome">
-    欢迎来到黄雷荀的专属世界
-</div>
 
 <!-- 顶部导航栏 -->
 <div class="navbar">
@@ -605,11 +579,6 @@
 </audio>
 
 <script>
-// 欢迎动画
-setTimeout(()=>{
-    document.getElementById('welcome').remove();
-},2500);
-
 // 星空背景
 const canvas=document.createElement('canvas');
 document.body.appendChild(canvas);
