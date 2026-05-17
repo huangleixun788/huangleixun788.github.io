@@ -27,6 +27,33 @@
             color: #222;
         }
 
+        /* 加载动画 */
+        #loading{
+            position:fixed;
+            top:0;left:0;
+            width:100%;height:100%;
+            background:#1a1a2e;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            z-index:99999;
+            flex-direction:column;
+            color:#e94560;
+            font-size:1.2rem;
+        }
+        .load-circle{
+            width:50px;height:50px;
+            border:5px solid #333;
+            border-top:5px solid #e94560;
+            border-radius:50%;
+            animation:load 1s linear infinite;
+            margin-bottom:20px;
+        }
+        @keyframes load{
+            0%{transform:rotate(0deg)}
+            100%{transform:rotate(360deg)}
+        }
+
         /* 导航栏 */
         .navbar {
             position: fixed;
@@ -143,6 +170,15 @@
             background: #f44336;
             color: #fff;
         }
+        .note-btn{
+            background:#10b981;
+            color:#fff;
+        }
+        .music-btn{
+            background:#f59e0b;
+            color:#fff;
+        }
+
         /* 弹窗样式 */
         .modal {
             display: none;
@@ -418,9 +454,176 @@
             0%{transform:translateY(0);opacity:1;}
             100%{transform:translateY(-50px);opacity:0;}
         }
+
+        /* 音乐播放器 */
+        .music-player{
+            position:fixed;
+            bottom:80px;
+            left:20px;
+            width:280px;
+            background:#1e293b;
+            border-radius:15px;
+            padding:15px;
+            box-shadow:0 0 20px rgba(0,0,0,0.3);
+            z-index:999;
+            border:1px solid #444;
+        }
+        body.light .music-player{
+            background:#fff;
+            border-color:#ddd;
+        }
+        .music-info{
+            font-size:0.9rem;
+            margin-bottom:10px;
+            color:#25f4ee;
+        }
+        .music-btns button{
+            padding:6px 12px;
+            margin:0 5px;
+            border:none;
+            border-radius:8px;
+            background:#e94560;
+            color:#fff;
+            cursor:pointer;
+        }
+
+        /* 便签 */
+        .note-box{
+            background:rgba(255,255,255,0.05);
+            padding:15px;
+            border-radius:10px;
+            margin:15px 0;
+        }
+        #noteInput{
+            width:100%;
+            height:80px;
+            padding:10px;
+            border-radius:8px;
+            border:none;
+            outline:none;
+            background:rgba(0,0,0,0.2);
+            color:#fff;
+            resize:none;
+        }
+        body.light #noteInput{
+            background:rgba(0,0,0,0.05);
+            color:#222;
+        }
+        #noteList{
+            margin-top:15px;
+            text-align:left;
+        }
+        .note-item{
+            background:rgba(255,255,255,0.1);
+            padding:10px;
+            border-radius:8px;
+            margin:8px 0;
+            position:relative;
+        }
+        body.light .note-item{
+            background:rgba(0,0,0,0.05);
+        }
+        .del-note{
+            position:absolute;
+            right:8px;top:8px;
+            background:#f44336;
+            color:#fff;
+            border:none;
+            border-radius:4px;
+            padding:2px 6px;
+            font-size:12px;
+            cursor:pointer;
+        }
+
+        /* 运行时间 */
+        #runTime{
+            color:#10b981;
+            margin:10px 0;
+            font-size:1.1rem;
+        }
+
+        /* 天气 */
+        #weather{
+            color:#f59e0b;
+            margin:10px 0;
+            font-size:1.1rem;
+        }
+
+        /* 按键显示 */
+        #keyShow{
+            position:fixed;
+            bottom:100px;
+            left:50%;
+            transform:translateX(-50%);
+            background:#1e293b;
+            color:#fff;
+            padding:8px 16px;
+            border-radius:30px;
+            font-size:1.1rem;
+            z-index:999;
+            opacity:0;
+            transition:0.3s;
+        }
+        body.light #keyShow{
+            background:#fff;
+            color:#222;
+        }
+
+        /* 右键菜单 */
+        #contextMenu{
+            position:fixed;
+            width:150px;
+            background:#1e293b;
+            border-radius:10px;
+            padding:10px;
+            z-index:99999;
+            display:none;
+            border:1px solid #444;
+        }
+        body.light #contextMenu{
+            background:#fff;
+            border-color:#ddd;
+        }
+        .ctx-item{
+            padding:8px;
+            border-radius:6px;
+            cursor:pointer;
+            transition:0.2s;
+        }
+        .ctx-item:hover{
+            background:#e94560;
+            color:#fff;
+        }
     </style>
 </head>
 <body>
+
+<!-- 加载页面 -->
+<div id="loading">
+    <div class="load-circle"></div>
+    <div>黄雷荀的网站加载中...</div>
+</div>
+
+<!-- 右键菜单 -->
+<div id="contextMenu">
+    <div class="ctx-item" onclick="toggleTheme()">切换主题</div>
+    <div class="ctx-item" onclick="window.scrollTo(0,0)">回到顶部</div>
+    <div class="ctx-item" onclick="copySite()">复制网址</div>
+    <div class="ctx-item" onclick="randomBg()">随机背景</div>
+</div>
+
+<!-- 按键显示 -->
+<div id="keyShow"></div>
+
+<!-- 音乐播放器 -->
+<div class="music-player">
+    <div class="music-info">🎵 正在播放：黄雷荀专属BGM</div>
+    <div class="music-btns">
+        <button onclick="playMusic()">播放</button>
+        <button onclick="pauseMusic()">暂停</button>
+        <button onclick="nextMusic()">下一首</button>
+    </div>
+</div>
 
 <!-- 顶部导航栏 -->
 <div class="navbar">
@@ -431,7 +634,8 @@
     <a onclick="navSwitch('games')" class="nav-item">游戏</a>
     <a onclick="navSwitch('favorite')" class="nav-item">收藏</a>
     <a onclick="navSwitch('message')" class="nav-item">留言</a>
-    <a href="media.html" target="_blank" class="nav-item">🎬 视频图片仓库</a>
+    <a onclick="navSwitch('note')" class="nav-item">📝 便签</a>
+    <a href="media.html" target="_blank" class="nav-item">🎬 视频仓库</a>
 </div>
 
 <!-- 首页 -->
@@ -446,6 +650,8 @@
     </div>
 
     <div id="nowTime"></div>
+    <div id="runTime"></div>
+    <div id="weather"></div>
     <div id="quote"></div>
 
     <div class="visit-box">
@@ -458,6 +664,7 @@
     <a href="https://www.douyin.com/user/MS4wLjABAAAAiA8yOUz29wGF8eMho0WXEgQHfPIwQl8rThYYjCnCQU" class="btn douyin-btn">👉 我的抖音</a>
     <button class="btn auth-btn" onclick="openModal('loginModal')">登录 / 注册</button>
     <button class="btn theme-btn" onclick="toggleTheme()">🌙 切换主题</button>
+    <button class="btn note-btn" onclick="navSwitch('note')">📝 便签</button>
 </div>
 
 <!-- 技能 -->
@@ -544,6 +751,17 @@
     <div id="msgList"></div>
 </div>
 
+<!-- 便签 -->
+<div id="note" class="section-box">
+    <h2 class="section-title">📝 我的便签</h2>
+    <div class="note-box">
+        <textarea id="noteInput" placeholder="在这里记录你的想法..."></textarea>
+        <button class="btn note-btn" onclick="saveNote()">保存便签</button>
+        <button class="btn clear-btn" onclick="clearNote()">清空便签</button>
+    </div>
+    <div id="noteList"></div>
+</div>
+
 <!-- 登录弹窗 -->
 <div id="loginModal" class="modal">
     <div class="modal-content">
@@ -580,6 +798,13 @@
 </audio>
 
 <script>
+// 加载动画
+window.onload=()=>{
+    setTimeout(()=>{
+        document.getElementById('loading').style.display='none';
+    },1500);
+}
+
 // 星空背景
 const canvas=document.createElement('canvas');
 document.body.appendChild(canvas);
@@ -629,6 +854,22 @@ function showTime(){
 }
 setInterval(showTime,1000);
 showTime();
+
+// 网站运行时间
+function siteRunTime(){
+    let start=new Date("2025-12-1");
+    let now=new Date();
+    let diff=now-start;
+    let day=Math.floor(diff/1000/60/60/24);
+    document.getElementById('runTime').innerText="🚀 网站已运行："+day+" 天";
+}
+siteRunTime();
+
+// 天气
+function getWeather(){
+    document.getElementById('weather').innerText="🌤️ 天气：晴朗 18℃";
+}
+getWeather();
 
 // 语录
 const quotes=[
@@ -767,20 +1008,90 @@ function count(){
     document.getElementById('visitCount').innerText=n;
 }
 
-// 背景音乐
-window.onload=()=>{
-    count();
-    renderMsg();
-    renderFavorite();
-    let u=localStorage.getItem('user');
-    if(u){
-        document.getElementById('userInfo').innerText='当前登录：'+u;
-        document.getElementById('logoutBtn').style.display='inline-block';
-    }
-    setTimeout(()=>{
-        document.getElementById('bgm').play().catch(e=>{});
-    },3000);
+// 音乐
+let musicList=["https://music.163.com/abc.mp3"];
+let musicIndex=0;
+function playMusic(){document.getElementById('bgm').play()}
+function pauseMusic(){document.getElementById('bgm').pause()}
+function nextMusic(){
+    musicIndex=(musicIndex+1)%musicList.length;
+    document.getElementById('bgm').src=musicList[musicIndex];
+    playMusic();
 }
+
+// 便签
+function saveNote(){
+    let c=document.getElementById('noteInput').value.trim();
+    if(!c)return alert('请输入内容！');
+    let arr=JSON.parse(localStorage.getItem('notes'))||[];
+    arr.push({c,t:new Date().toLocaleString()});
+    localStorage.setItem('notes',JSON.stringify(arr));
+    renderNote();
+    document.getElementById('noteInput').value='';
+}
+function renderNote(){
+    let arr=JSON.parse(localStorage.getItem('notes'))||[];
+    let h='';
+    arr.forEach((n,i)=>{
+        h+=`<div class="note-item">${n.c}<br><small>${n.t}</small><button class="del-note" onclick="delNote(${i})">×</button></div>`;
+    });
+    document.getElementById('noteList').innerHTML=h;
+}
+function delNote(i){
+    let a=JSON.parse(localStorage.getItem('notes'))||[];
+    a.splice(i,1);
+    localStorage.setItem('notes',JSON.stringify(a));
+    renderNote();
+}
+function clearNote(){
+    if(confirm('清空所有便签？')){localStorage.removeItem('notes');renderNote()}
+}
+
+// 随机背景
+function randomBg(){
+    let bg=["linear-gradient(135deg,#1a1a2e,#16213e)","linear-gradient(135deg,#2d1b69,#1a1040)","linear-gradient(135deg,#0d1b2a,#1b263b)"];
+    document.body.style.background=bg[Math.floor(Math.random()*bg.length)];
+}
+
+// 复制网址
+function copySite(){
+    navigator.clipboard.writeText(window.location.href);
+    alert('网址已复制！');
+}
+
+// 键盘显示
+document.addEventListener('keydown',e=>{
+    let s=document.getElementById('keyShow');
+    s.innerText='⌨️ 你按下了：'+e.key;
+    s.style.opacity=1;
+    setTimeout(()=>s.style.opacity=0,1000);
+});
+
+// 右键菜单
+document.addEventListener('contextmenu',e=>{
+    e.preventDefault();
+    let m=document.getElementById('contextMenu');
+    m.style.display='block';
+    m.style.left=e.clientX+'px';
+    m.style.top=e.clientY+'px';
+});
+document.addEventListener('click',()=>{
+    document.getElementById('contextMenu').style.display='none';
+});
+
+// 初始化
+count();
+renderMsg();
+renderFavorite();
+renderNote();
+let u=localStorage.getItem('user');
+if(u){
+    document.getElementById('userInfo').innerText='当前登录：'+u;
+    document.getElementById('logoutBtn').style.display='inline-block';
+}
+setTimeout(()=>{
+    document.getElementById('bgm').play().catch(e=>{});
+},3000);
 </script>
 </body>
 </html>
